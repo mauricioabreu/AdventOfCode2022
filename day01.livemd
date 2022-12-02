@@ -1,0 +1,53 @@
+# Day 1
+
+```elixir
+Mix.install([
+  {:kino, "~> 0.7.0"}
+])
+
+input = Kino.Input.textarea("Please paste your input file:")
+```
+
+## Module
+
+```elixir
+defmodule Crate do
+  def calories_by_crate(input) do
+    input
+    |> Kino.Input.read()
+    |> String.split("\n\n", trim: true)
+    |> Enum.map(fn crate ->
+      crate
+      |> String.split("\n", trim: true)
+      |> Enum.map(&String.to_integer/1)
+      |> Enum.sum()
+    end)
+  end
+
+  def elf_with_most_calories(input) do
+    input
+    |> calories_by_crate
+    |> Enum.max()
+  end
+
+  def top_three_elves_with_most_calories(input) do
+    input
+    |> calories_by_crate
+    |> Enum.sort(:desc)
+    |> Enum.take(3)
+    |> Enum.sum()
+  end
+end
+```
+
+## Part 1
+
+```elixir
+IO.puts(Crate.elf_with_most_calories(input))
+```
+
+## Part2
+
+```elixir
+IO.puts(Crate.top_three_elves_with_most_calories(input))
+```
