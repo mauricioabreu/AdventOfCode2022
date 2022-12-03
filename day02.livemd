@@ -1,0 +1,64 @@
+# Day 2
+
+```elixir
+Mix.install([
+  {:kino, "~> 0.7.0"}
+])
+
+input = Kino.Input.textarea("Please paste your input file:")
+```
+
+## Answers
+
+```elixir
+defmodule Jankenpon do
+  @hand_shapes %{"A" => 0, "B" => 1, "C" => 2, "X" => 0, "Y" => 1, "Z" => 2}
+
+  def as_scores(input, strategy) do
+    input
+    |> String.split("\n", trim: true)
+    |> Enum.map(&String.split/1)
+    |> Enum.map(fn [x, y] -> [Map.get(@hand_shapes, x), strategy.(@hand_shapes, x, y)] end)
+    |> Enum.map(fn [x, y] -> y + 1 + result(x, y) end)
+    |> Enum.sum()
+  end
+
+  def score(hand) do
+    rem(rem(hand - 1 + 3, 3), 3)
+  end
+
+  def result(x, y) do
+    cond do
+      x == y -> 3
+      score(y) == x -> 6
+      true -> 0
+    end
+  end
+end
+
+defmodule SimpleStrategy do
+  def strategy(hand_shapes, _, h2) do
+    Map.get(hand_shapes, h2)
+  end
+end
+
+defmodule OpponentStrategy do
+  def strategy(hand_shapes, h1, h2) do
+    nh = OpponentStrategy.choose_shape(h1, h2)
+    Map.get(hand_shapes, nh)
+  end
+
+  def choose_shape("A", "X"), do: "Z"
+  def choose_shape("A", "Y"), do: "X"
+  def choose_shape("A", "Z"), do: "Y"
+  def choose_shape("B", "X"), do: "X"
+  def choose_shape("B", "Y"), do: "Y"
+  def choose_shape("B", "Z"), do: "Z"
+  def choose_shape("C", "X"), do: "Y"
+  def choose_shape("C", "Y"), do: "Z"
+  def choose_shape("C", "Z"), do: "X"
+end
+
+IO.puts("Part 1: #{Jankenpon.as_scores(Kino.Input.read(input), &SimpleStrategy.strategy/3)}")
+IO.puts("Part 2: #{Jankenpon.as_scores(Kino.Input.read(input), &OpponentStrategy.strategy/3)}")
+```
