@@ -37,16 +37,7 @@ defmodule Crate do
     |> Enum.sum()
   end
 end
-```
 
-## Part 1
-
-```elixir
-IO.puts(Crate.elf_with_most_calories(Kino.Input.read(input)))
-```
-
-## Part2
-
-```elixir
-IO.puts(Crate.top_three_elves_with_most_calories(Kino.Input.read(input)))
+IO.puts("Part 1: #{Crate.elf_with_most_calories(Kino.Input.read(input))}")
+IO.puts("Part 2: #{Crate.top_three_elves_with_most_calories(Kino.Input.read(input))}")
 ```
