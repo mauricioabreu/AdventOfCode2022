@@ -14,7 +14,6 @@ input = Kino.Input.textarea("Please paste your input file:")
 defmodule Crate do
   def calories_by_crate(input) do
     input
-    |> Kino.Input.read()
     |> String.split("\n\n", trim: true)
     |> Enum.map(fn crate ->
       crate
@@ -43,11 +42,11 @@ end
 ## Part 1
 
 ```elixir
-IO.puts(Crate.elf_with_most_calories(input))
+IO.puts(Crate.elf_with_most_calories(Kino.Input.read(input)))
 ```
 
 ## Part2
 
 ```elixir
-IO.puts(Crate.top_three_elves_with_most_calories(input))
+IO.puts(Crate.top_three_elves_with_most_calories(Kino.Input.read(input)))
 ```
